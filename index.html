@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1 class="status"></h1>
+    <button class="find-state" onclick="mystate()">Search</button>
+  </body>
+  <script>
+    const mystate = () => {
+      const state = document.querySelector(".status");
+
+      const success = (position) => {
+        const lat = position.coords.latitude;
+        const log = position.coords.longitude;
+        console.log(lat, log);
+        // const loc = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${log}&localityLanguage=en`;
+        fetch(
+          `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${log}&localityLanguage=en`
+        )
+          .then((loc) => loc.json())
+          .then(
+            (loc) => (document.querySelector(".status").innerText = loc.city)
+          );
+      };
+
+      const error = () => {
+        status.textContent = "unable to get";
+      };
+      navigator.geolocation.getCurrentPosition(success, error);
+    };
+  </script>
+</html>
